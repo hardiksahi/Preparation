@@ -56,6 +56,27 @@ class LinkedList:
             node.next = current
             self.count += 1
 
+    def insert_sorted_list(self, val: Numeric):
+
+        if self.count == 0:
+            self.insert_start(val)
+        else:
+            node = ListNode(val)
+            curr = self.head
+            prev = None
+
+            while curr is not None and curr.val <= val:
+                prev = curr
+                curr = curr.next
+
+            if prev is None:
+                node.next = curr
+                self.head = node
+            else:
+                prev.next = node
+                node.next = curr
+            self.count += 1
+
     def delete_end(self):
         if self.head is None:
             raise Exception("Nothing to delete since list is empty")
@@ -124,6 +145,21 @@ class LinkedList:
                 print(current.val)
                 current = current.next
 
+    def display_elements_in_reverse(self):
+        if self.count == 0:
+            print("List is empty")
+        elif self.head.next is None:
+            print(self.head.val)
+        else:
+            element_stack = []
+            current = self.head
+            while current is not None:
+                element_stack.append(current.val)
+                current = current.next
+
+            while len(element_stack) != 0:
+                print(element_stack.pop())
+
     def count_elements(self):
         if self.head is None:
             return 0
@@ -175,6 +211,21 @@ class LinkedList:
             while self.head is not None:
                 self.delete_start()
             print("Successfully deleted all nodes in the list")
+
+    def reverse_list(self):
+        if self.head is None or self.head.next is None:
+            return self.head
+
+        temp = None
+        nxt = None
+
+        while self.head is not None:
+            nxt = self.head.next
+            self.head.next = temp
+            temp = self.head
+            self.head = nxt
+
+        self.head = temp
 
 
 def populate_list(element_list: List[Numeric]) -> LinkedList:
@@ -246,3 +297,20 @@ if __name__ == "__main__":
     list2 = populate_list(element_list)
     print(f"Number of elements in list2: {list2.count_elements()}")
     list2.display_elements()
+    print("********************************")
+
+    list3 = LinkedList()
+    list3.insert_sorted_list(10)
+    list3.insert_sorted_list(0)
+    list3.insert_sorted_list(4)
+    list3.insert_sorted_list(15)
+    print(f"Number of elements in list3: {list3.count_elements()}")
+    list3.display_elements()
+    print(f"Display elemnets in revrse....")
+    list3.display_elements_in_reverse()
+    print("********************************")
+
+    list3.reverse_list()
+    print(f"Number of elements in reversed list3: {list3.count_elements()}")
+    list3.display_elements()
+    print("********************************")
